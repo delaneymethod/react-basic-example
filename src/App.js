@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './App.css';
 import Person from './Person/Person'
 
@@ -58,22 +59,10 @@ const App = () => {
     ));
   }
 
-  // Scoped styling
-  const style = {
-    backgroundColor: 'white',
-    font: 'inherit',
-    border: '1px solid blue',
-    padding: '8px',
-    cursor: 'pointer',
-  };
-
   return (
     <div className="App">
       <h1>React 16 Demo</h1>
-      <button
-        style={style}
-        onClick={togglePersonsHandler}
-      >
+      <button onClick={togglePersonsHandler}>
         Toggle Persons
       </button>
       {persons}
