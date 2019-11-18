@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import './App.css';
-import Person from './Person/Person'
+import classes from './App.module.css';
+import Person from './Person/Person';
+// import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 const App = () => {
   const [ personsState, setPersonsState ] = useState({
@@ -45,6 +46,7 @@ const App = () => {
     });
   }
 
+  let btnClass = '';
   let persons = null;
 
   if (showPersonsState.showPersons) {
@@ -57,12 +59,17 @@ const App = () => {
         changed={event => nameChangedHandler(event, index)}
       />
     ));
+
+    btnClass = classes.Red;
   }
 
   return (
-    <div className="App">
+    <div className={classes.App}>
       <h1>React 16 Demo</h1>
-      <button onClick={togglePersonsHandler}>
+      <button
+        className={btnClass}
+        onClick={togglePersonsHandler}
+      >
         Toggle Persons
       </button>
       {persons}
