@@ -5,33 +5,57 @@ import Person from './Person/Person'
 const App = () => {
   const [ personsState, setPersonsState ] = useState({
     persons: [
-      { name: 'Sean', age: 37 },
-      { name: 'Ashley', age: 36 },
-      { name: 'Sionainn', age: 3 },
-      { name: 'Saoirse', age: 1 },
-    ]
+      { id: 'sean-37', name: 'Sean', age: 37 },
+      { id: 'ashley-36', name: 'Ashley', age: 36 },
+      { id: 'sionainn-3', name: 'Sionainn', age: 3 },
+      { id: 'saoirse-1', name: 'Saoirse', age: 1 },
+    ],
   });
 
-  const switchNameHandler = newName => {
-    setPersonsState({
-      persons: [
-        { name: newName, age: 37 },
-        { name: 'Ashley D', age: 36 },
-        { name: 'Sionainn D', age: 3 },
-        { name: 'Saoirse D', age: 1 },
-      ]
+  const [ showPersonsState, setShowPersonsState ] = useState({
+    showPersons: false,
+  });
+
+  const nameChangedHandler = (event, personIndex) => {
+    const person = {
+      ...personsState.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...personsState.persons];
+
+    persons[personIndex] = person;
+
+    setPersonsState({ persons });
+  }
+
+  const deletePersonsHandler = personsIndex => {
+    const persons = [...personsState.persons];
+
+    persons.splice(personsIndex, 1);
+
+    setPersonsState({ persons });
+  }
+
+  const togglePersonsHandler = () => {
+    setShowPersonsState({
+      showPersons: !showPersonsState.showPersons
     });
   }
 
-  const nameChangedHandler = event => {
-    setPersonsState({
-      persons: [
-        { name: event.target.value, age: 37 },
-        { name: 'Ashley', age: 36 },
-        { name: 'Sionainn', age: 3 },
-        { name: 'Saoirse', age: 1 },
-      ]
-    });
+  let persons = null;
+
+  if (showPersonsState.showPersons) {
+    persons = personsState.persons.map(({ id, name, age }, index) => (
+      <Person
+        key={id}
+        name={name}
+        age={age}
+        click={() => deletePersonsHandler(index)}
+        changed={event => nameChangedHandler(event, index)}
+      />
+    ));
   }
 
   // Scoped styling
@@ -48,17 +72,11 @@ const App = () => {
       <h1>React 16 Demo</h1>
       <button
         style={style}
-        onClick={switchNameHandler.bind(this, 'Sean!!')}
+        onClick={togglePersonsHandler}
       >
-        Switch Name
+        Toggle Persons
       </button>
-      {personsState.persons.map(({ name, age }) => (
-        <Person
-          name={name}
-          age={age}
-          changed={nameChangedHandler}
-        />
-      ))}
+      {persons}
     </div>
   )
 }
