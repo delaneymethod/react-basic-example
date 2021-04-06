@@ -1,8 +1,9 @@
 import React from 'react';
+import * as PropTypes from 'prop-types';
 
 import User from './User/User';
 
-const Users = props => props.showUsers ? props.users.map((user, index) => (
+const users = props => props.showUsers ? props.users.map((user, index) => (
 	<User
 		key={user.id}
 		name={user.name}
@@ -12,4 +13,30 @@ const Users = props => props.showUsers ? props.users.map((user, index) => (
 	/>
 )) : null;
 
-export default Users;
+users.defaultProps = {
+	users: [
+		{ id: '', name: '', age: 0 }
+	],
+	showUsers: false,
+	onClick: () => {
+	},
+	onChange: () => {
+	}
+};
+
+users.propTypes = {
+	users: PropTypes
+		.arrayOf(
+			PropTypes.shape({
+				id: PropTypes.string.isRequired,
+				name: PropTypes.string.isRequired,
+				age: PropTypes.number.isRequired
+			})
+		)
+		.isRequired,
+	showUsers: PropTypes.bool,
+	onClick: PropTypes.func.isRequired,
+	onChange: PropTypes.func.isRequired
+};
+
+export default users;
